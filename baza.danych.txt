@@ -1,0 +1,5 @@
+saldo:39895.0
+mleko;12;4.0
+maslo;10;3.0
+stop;3;5.0
+rower;2;50.0
