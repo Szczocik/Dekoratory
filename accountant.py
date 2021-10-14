@@ -45,14 +45,10 @@ class Manager:
 
         file.close()
 
+
 manager = Manager()
 
-# @manager.assign("printyes")
-# def printer(manager):
-#     print("yes")
-#
-#
-# manager.execute("printyes")
+
 @manager.assign("saldo")
 def saldo():
     amount = float(input("Kwota wpłaty/wypłaty: "))
@@ -63,13 +59,48 @@ def saldo():
     log = f"Zmiana saldo o: {amount}"
     manager.logs.append(log)
 
+
 @manager.assign("zakup")
 def zakup():
-    pass
+    product_name = input(("Nazwa produktu: "))
+    product_count = int(input("Ilość sztuk: "))
+    product_price = float(input("Cena za sztukę: "))
+    product_total_price = product_count * product_price
+    if product_total_price > manager.saldo:
+        print(f"Cena za towary ({product_total_price}) przekracza wartość salda {manager.saldo}")
+    else:
+        manager.saldo -= product_total_price
+        if not store.get(product_name):
+            store[product_name] = {'count': product_count, 'price': product_price}
+        else:
+            store_product_count = store[product_name]['count']
+            store[product_name] = {
+                'count': store_product_count+product_count,
+                'price': product_price}
+    log = f"Dokonano zakupu produktu: {product_name} w ilości {product_count} sztuk, w cenie jednostkowej {product_price} zł."
+    manager.logs.append(log)
 
 @manager.assign("sprzedaz")
 def sprzedaz():
-    pass
+    product_name = input(("Nazwa produktu: "))
+    product_count = int(input("Ilość sztuk: "))
+    product_price = float(input("Cena za sztukę: "))
+    if not store.get(product_name):
+        print("Produktu nie ma w magazynie!")
+
+    if store.get(product_name)['count'] < product_count:
+        print("Brak wystarczającej ilości towaru!")
+
+    store[product_name] = {
+        'count': store.get(product_name)['count'] - product_count,
+        'price': product_price
+    }
+    manager.saldo += product_count * product_price
+    if not store.get(product_name)['count']:
+        del store[product_name]
+
+    log = f"Dokonano sprzedaży produktu: {product_name} w ilości {product_count} sztuk, o cenie jednostkowej {product_price}."
+    manager.logs.append(log)
 
 # mode = sys.argv[1]
 #
