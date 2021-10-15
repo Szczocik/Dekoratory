@@ -1,7 +1,8 @@
-saldo;39179.0
-mleko;8;2.0
+saldo;38903.0
+mleko;6;2.0
 maslo;10;3.0
 stop;3;5.0
 rower;4;200.0
 koce;2;30.0
-samochod;2;100.0
+samochod;6;500.0
+kola;2;40.0

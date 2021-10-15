@@ -1,6 +1,7 @@
 from accountant import manager
+import pprint
 manager.read_file()
 manager.execute('sprzedaz')
 manager.write_file()
 manager.logs_write_file()
-print(manager.store)
+pprint.pprint(manager.store)
