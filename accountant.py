@@ -1,10 +1,8 @@
-import sys
 
 ALLOWED_MODE = ('saldo', 'sprzedaz', 'zakup', 'konto', 'magazyn', 'przeglad')  # dozwolone komendy wejścia
 ALLOWED_COMMANDS = ('saldo', 'zakup', 'sprzedaz', 'stop')  # dozwolone komendy w programie
 mode = ALLOWED_MODE
 
-# saldo = None # poczatkowe saldo
 store = {}  # MAGAZYN
 
 
@@ -14,11 +12,6 @@ class Manager:
         self.saldo = None
         self.logs = []
         self.store = {}
-        self.product_name = ''
-        self.product_count = ''
-        self.product_price = ''
-
-
 
     def assign(self, name):
         def decorate(cb):
@@ -52,15 +45,16 @@ class Manager:
 
     def write_file(self, filepath='baza_danych.txt'):
         file = open(filepath, 'w')
-        file.write('saldo:' + str(saldo) + '\n')
-        for product_name, data in store.items():
+        file.write('saldo;' + str(self.saldo) + '\n')
+        for product_name, data in self.store.items():
             file.write(str(product_name) + ';' + str(data['count']) + ';' + str(data['price']) + '\n')
         file.close()
         print("Koniec programu!")
 
-# mode = sys.argv[1]
-#
-# logs = []  # historia operacji
+    def logs_write_file(self):
+        with open('logs.txt', 'a', encoding='utf8') as file:
+            for log in self.logs:
+                file.write(log + '\n')
 
 
 manager = Manager()
@@ -88,12 +82,12 @@ def zakup():
     else:
         manager.saldo -= product_total_price
         if not manager.store.get(product_name):
-            manager.store[product_name] = {'count': manager.product_count, 'price': manager.product_price}
+            manager.store[product_name] = {'count': product_count, 'price': product_price}
         else:
             manager.store_product_count = manager.store[product_name]['count']
             manager.store[product_name] = {
-                'count': manager.store_product_count+manager.product_count,
-                'price': manager.product_price}
+                'count': manager.store_product_count+product_count,
+                'price': product_price}
     log = f"Dokonano zakupu produktu: {product_name} w ilości {product_count} sztuk, w cenie jednostkowej {product_price} zł."
     manager.logs.append(log)
 

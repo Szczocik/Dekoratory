@@ -1,0 +1,2 @@
+Dokonano sprzedaży produktu: mleko w ilości 2 sztuk, o cenie jednostkowej 2.0.
+Dokonano zakupu produktu: rower w ilości 2 sztuk, w cenie jednostkowej 200.0 zł.
